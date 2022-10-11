@@ -30,7 +30,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
     let login_info = login_resp.json::<ResponseInfo>().await?;
     if login_info.e != 0 {
-        panic!("登陆时：{}", login_info.m);
+        panic!("登录时发生错误：{}", login_info.m);
     }
 
     let geo_api_info = r#"{"type":"complete","position":{"Q":34.125585394966,"R":108.83212402343798,"lng":108.832124,"lat":34.125585},"location_type":"html5","message":"Get ipLocation failed.Get geolocation success.Convert Success.Get address success.","accuracy":35,"isConverted":true,"status":1,"addressComponent":{"citycode":"029","adcode":"610116","businessAreas":[],"neighborhoodType":"","neighborhood":"","building":"","buildingType":"","street":"雷甘路","streetNumber":"266#","country":"中国","province":"陕西省","city":"西安市","district":"长安区","township":"兴隆街道"},"formattedAddress":"陕西省西安市长安区兴隆街道西安电子科技大学长安校区西二楼B西安电子科技大学南校区","roads":[],"crosses":[],"pois":[],"info":"SUCCESS"}"#;
@@ -57,7 +57,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
     let checkup_info = checkup_resp.json::<ResponseInfo>().await?;
     if checkup_info.e != 0 {
-        panic!("填报时：{}", checkup_info.m);
+        panic!("填报时发生错误：{}", checkup_info.m);
     }
 
     Ok(())
