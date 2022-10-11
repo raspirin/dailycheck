@@ -16,6 +16,7 @@ jobs:
     env:
       CHECKUP_USERNAME: ${{ secrets.CHECKUP_USERNAME }}
       CHECKUP_PASSWORD: ${{ secrets.CHECKUP_PASSWORD }}
+      CHECKUP_CAMPUS: ${{ secrets.CHECKUP_CAMPUS }}
 
     steps:
     - uses: actions/checkout@v3

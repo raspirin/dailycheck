@@ -4,9 +4,9 @@
 
 这是一个自动填报西电晨午晚检的程序，仅支持使用 GitHub Actions 部署。
 
-仅支持南校区。
+支持南北校区。
 
-填报脚本将会在每天的 8:10, 13:10 和 19:10 自动执行。
+填报脚本将会在每天的 8:10, 13:10 和 19:10 自动执行，因不明原因可能会出现误差。
 
 在 Fork 后请及时与上游同步更改。
 
@@ -22,6 +22,7 @@
 2. Name 填入 `CHECKUP_USERNAME`，Secret 填入你的学号。
 3. 点击「Add secret」，此时你已经成功新建了一个 repository secret，Name 为 `CHECKUP_USERNAME`，Secret 为你的学号。
 4. 同理，新建一个 repository secret，Name 为 `CHECKUP_PASSWORD`，Secret 为你的密码。
+5. 如果你所在的校区是北校区，你需要额外创建一个名为  `CHECKUP_CAMPUS` 的 Secret，其值为 1.
 
 经过以上步骤，脚本就配置完成了。
 
