@@ -22,7 +22,12 @@ pub fn get_env_var(var: &str) -> String {
 
 pub fn get_campus() -> i32 {
     match env::var("CHECKUP_CAMPUS") {
-        Ok(v) => v.as_str().parse::<i32>().unwrap(),
+        Ok(mut v) => {
+            if v.is_empty() {
+                v.push('0');
+            }
+            v.as_str().parse::<i32>().unwrap()
+        },
         Err(_) => 0,
     }
 }
