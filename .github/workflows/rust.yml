@@ -1,0 +1,21 @@
+name: Rust
+
+on:
+  schedule:
+  - cron: '10 0,5,11 * * *'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check_up:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: build
+      run: cargo build --verbose
+    - name: check up
+      run: cargo run ${{ secrets.CHECKUP_USERNAME }} ${{ secrets.CHECKUP_PASSWORD }}
+
