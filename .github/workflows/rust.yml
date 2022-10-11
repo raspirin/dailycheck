@@ -13,10 +13,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      CHECKUP_USERNAME: ${{ secrets.CHECKUP_USERNAME }}
+      CHECKUP_PASSWORD: ${{ secrets.CHECKUP_PASSWORD }}
+
     steps:
     - uses: actions/checkout@v3
     - name: build
       run: cargo build --verbose
     - name: check up
-      run: cargo run ${{ secrets.CHECKUP_USERNAME }} ${{ secrets.CHECKUP_PASSWORD }}
+      run: cargo run
 
