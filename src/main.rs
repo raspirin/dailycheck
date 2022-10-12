@@ -31,7 +31,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
     let checkup_info = checkup_resp.json::<dailycheck::ResponseInfo>().await?;
     if checkup_info.e != 0 {
-        panic!("填报时发生错误：{}", checkup_info.m);
+        if checkup_info.m != "您已上报过" {
+            panic!("填报时发生错误：{}", checkup_info.m);
+        }
+        println!("填报时发生错误：{}", checkup_info.m);
     }
 
     Ok(())
