@@ -20,6 +20,7 @@ pub fn get_env_var(var: &str) -> String {
     }
 }
 
+// 为了不破坏原有的Fork对此环境变量进行单独处理
 pub fn get_campus() -> i32 {
     match env::var("CHECKUP_CAMPUS") {
         Ok(mut v) => {

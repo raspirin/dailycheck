@@ -3,7 +3,7 @@ name: Run
 on:
   workflow_dispatch:
   schedule:
-  - cron: '10 0,5,11 * * *'
+  - cron: '23 5,11,23 * * *'
 
 env:
   CARGO_TERM_COLOR: always
