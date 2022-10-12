@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   schedule:
   - cron: '23 5,11,23 * * *'
+  - cron: '47 2,8,14 * * *'
 
 env:
   CARGO_TERM_COLOR: always
