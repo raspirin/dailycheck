@@ -32,11 +32,23 @@ impl CheckupClient {
         let username = get_env_var("CHECKUP_USERNAME");
         let password = get_env_var("CHECKUP_PASSWORD");
         let campus = get_campus();
-        CheckupClient { client, username, password, campus }
+        CheckupClient {
+            client,
+            username,
+            password,
+            campus,
+        }
     }
 
     fn post(&self, url: &str, body: &Vec<(&str, &str)>) -> Result<(), String> {
-        let resp = self.client.post(url).form(body).send().unwrap().json::<ResponseInfo>().unwrap();
+        let resp = self
+            .client
+            .post(url)
+            .form(body)
+            .send()
+            .unwrap()
+            .json::<ResponseInfo>()
+            .unwrap();
         if resp.e != 0 {
             return Err(resp.m);
         }
@@ -50,9 +62,7 @@ impl CheckupClient {
         let body = vec![("username", username), ("password", password)];
         match self.post(url, &body) {
             Ok(_) => Ok(()),
-            Err(v) => {
-                Err(format!("登录时发生错误：{}", v))
-            }
+            Err(v) => Err(format!("登录时发生错误：{}", v)),
         }
     }
 
@@ -61,9 +71,7 @@ impl CheckupClient {
         let body = get_checkup_post(self.campus);
         match self.post(url, &body) {
             Ok(_) => Ok(()),
-            Err(v) => {
-                Err(format!("填报时发生错误：{}", v))
-            }
+            Err(v) => Err(format!("填报时发生错误：{}", v)),
         }
     }
 }
@@ -83,7 +91,7 @@ fn get_campus() -> i32 {
                 v.push('0');
             }
             v.as_str().parse::<i32>().unwrap()
-        },
+        }
         Err(_) => 0,
     }
 }
