@@ -31,7 +31,7 @@
 #### 启用 Actions
 
 1. 点击「Actions」，点击那个大大的绿色按钮。
-2. 在左侧选择「Run」，点击「Enable workflow」。
+2. 在左侧选择「Auto Checkup」，点击「Enable workflow」。
 3. 点击「Run workflow」。
 4. 等待运行结果即可。如果运行成功会显示绿色的对勾。
 
@@ -40,7 +40,7 @@
 #### 查看可能的报错信息
 
 1. 点击你想看的运行记录「Run」。
-2. 点击「check up」。
+2. 点击「checkup」。
 3. 点击显示了红色叉号的步骤。
 
 ## 约定
