@@ -1,3 +1,4 @@
+use reqwest::blocking::Client;
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::env;
@@ -13,7 +14,61 @@ pub struct ResponseInfo {
     pub d: HashMap<String, String>,
 }
 
-pub fn get_env_var(var: &str) -> String {
+pub struct CheckupClient {
+    client: Client,
+    username: String,
+    password: String,
+    campus: i32,
+}
+
+impl CheckupClient {
+    pub fn new() -> Self {
+        let client = Client::builder()
+        .cookie_store(true)
+        // 微信UA
+        .user_agent("Mozilla/5.0 (Linux; Android 12; V2171A Build/SP1A.210812.003; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4317 MMWEBSDK/20220805 Mobile Safari/537.36 MMWEBID/3736 MicroMessenger/8.0.27.2220(0x28001B59) WeChat/arm64")
+        .build()
+        .unwrap();
+        let username = get_env_var("CHECKUP_USERNAME");
+        let password = get_env_var("CHECKUP_PASSWORD");
+        let campus = get_campus();
+        CheckupClient { client, username, password, campus }
+    }
+
+    fn post(&self, url: &str, body: &Vec<(&str, &str)>) -> Result<(), String> {
+        let resp = self.client.post(url).form(body).send().unwrap().json::<ResponseInfo>().unwrap();
+        if resp.e != 0 {
+            return Err(resp.m);
+        }
+        Ok(())
+    }
+
+    pub fn login_post(&self) -> Result<(), String> {
+        let url = "https://xxcapp.xidian.edu.cn/uc/wap/login/check";
+        let username = self.username.as_str();
+        let password = self.password.as_str();
+        let body = vec![("username", username), ("password", password)];
+        match self.post(url, &body) {
+            Ok(_) => Ok(()),
+            Err(v) => {
+                Err(format!("登录时发生错误：{}", v))
+            }
+        }
+    }
+
+    pub fn checkup_post(&self) -> Result<(), String> {
+        let url = "https://xxcapp.xidian.edu.cn/xisuncov/wap/open-report/save";
+        let body = get_checkup_post(self.campus);
+        match self.post(url, &body) {
+            Ok(_) => Ok(()),
+            Err(v) => {
+                Err(format!("填报时发生错误：{}", v))
+            }
+        }
+    }
+}
+
+fn get_env_var(var: &str) -> String {
     match env::var(var) {
         Ok(v) => v,
         Err(_) => panic!("初始化信息时发生错误：未获取到 {}", var),
@@ -21,7 +76,7 @@ pub fn get_env_var(var: &str) -> String {
 }
 
 // 为了不破坏原有的Fork对此环境变量进行单独处理
-pub fn get_campus() -> i32 {
+fn get_campus() -> i32 {
     match env::var("CHECKUP_CAMPUS") {
         Ok(mut v) => {
             if v.is_empty() {
@@ -33,7 +88,7 @@ pub fn get_campus() -> i32 {
     }
 }
 
-pub fn get_checkup_post(campus: i32) -> Vec<(&'static str, &'static str)> {
+fn get_checkup_post(campus: i32) -> Vec<(&'static str, &'static str)> {
     match campus {
         // 南校区
         0 => {
