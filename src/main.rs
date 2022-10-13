@@ -6,6 +6,9 @@ fn main() {
     }
 
     if let Err(v) = client.checkup_post() {
-        panic!("{}", v)
+        match v.as_str() {
+            "填报时发生错误：您已上报过" => println!("{}", v),
+            _ => panic!("{}", v)
+        }
     }
 }
